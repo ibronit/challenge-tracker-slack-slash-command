@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/go/src/github.com/ibronit/challenge-tracker-slack-slash-command/
+    ports:
+      - "8000:8000"
+    environment:
+      DB_PASS: asdasd
+      DB_USER: admin
+      DB_NAME: challenge-tracker
+      DB_HOST: db
+      PORT: 8000
+    command: CompileDaemon --build="go build" --command=./challenge-tracker-slack-slash-command
+
+  debug_app:
+    build: .
+    volumes:
+      - .:/go/src/github.com/ibronit/challenge-tracker-slack-slash-command/
+    ports:
+      - 2345:2345
+      - 8888:8888
+    environment:
+      DB_PASS: asdasd
+      DB_USER: admin
+      DB_NAME: challenge-tracker
+      DB_HOST: db
+      PORT: 8888
+    security_opt:
+      - "seccomp:unconfined"
+    command: dlv debug --listen=:2345 --headless=true --api-version=2 --log
+
+  db:
+    image: postgres:11
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: asdasd
+      POSTGRES_USER: admin
+      POSTGRES_DB: challenge-tracker

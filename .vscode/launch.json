@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+      {
+        "name": "Launch remote",
+        "type": "go",
+        "request": "attach",
+        "mode": "remote",
+        "cwd": "${workspaceFolder}",
+        "remotePath": "/go/src/github.com/ibronit/challenge-tracker-slack-slash-command",
+        "port": 2345,
+        "showLog": true,
+        "trace": "verbose"
+      }
+    ]
+  }
