@@ -1,22 +1,16 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"os"
 
-	"github.com/ibronit/challenge-tracker-slack-slash-command/controllers"
-
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
+	"github.com/ibronit/challenge-tracker-slack-slash-command/internal/handlers"
 )
 
 func main() {
-	router := mux.NewRouter()
+	router := gin.Default()
 
-	router.HandleFunc("/", controllers.HomePage).Methods("GET")
+	router.POST("/", handlers.Index)
 
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), router)
-	if err != nil {
-		fmt.Print(err)
-	}
+	router.Run(":" + os.Getenv("PORT"))
 }
