@@ -4,22 +4,29 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ibronit/challenge-tracker-slack-slash-command/internal/challenge"
 	"github.com/ibronit/challenge-tracker-slack-slash-command/internal/help"
+	"github.com/ibronit/challenge-tracker-slack-slash-command/internal/user"
+	"github.com/ibronit/challenge-tracker-slack-slash-command/pkg/db"
 )
 
-type command struct {
-	Text string `json:"text"`
-}
-
 var Index = func(c *gin.Context) {
-	var command command
-	c.BindJSON(&command)
+	text := c.PostForm("text")
 
-	switch command.Text {
+	switch text {
 	case "challenge":
+
+		slackId := c.PostForm("user_id")
+
+		user1 := &user.User{
+			Name:    "admin",
+			SlackId: slackId,
+		}
+
+		db.GetDB().Model(user1).Insert()
+
 		c.JSON(200, gin.H{"text": challenge.GetHelp().Text})
 		return
-	case "help":
 	default:
 		c.JSON(200, gin.H{"text": help.GetHelp().Text})
+
 	}
 }
