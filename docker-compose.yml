@@ -11,7 +11,7 @@ services:
       DB_PASS: asdasd
       DB_USER: admin
       DB_NAME: challenge-tracker
-      DB_HOST: db
+      DB_HOST: db:5432
       PORT: 8000
     command: CompileDaemon --build="go build" --command=./challenge-tracker-slack-slash-command
 
@@ -26,7 +26,7 @@ services:
       DB_PASS: asdasd
       DB_USER: admin
       DB_NAME: challenge-tracker
-      DB_HOST: db
+      DB_HOST: db:5432
       PORT: 8888
     security_opt:
       - "seccomp:unconfined"
@@ -35,6 +35,8 @@ services:
   db:
     image: postgres:11
     restart: always
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: asdasd
       POSTGRES_USER: admin
