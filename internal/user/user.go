@@ -3,6 +3,8 @@ package user
 import (
 	"time"
 
+	"github.com/ibronit/challenge-tracker-slack-slash-command/pkg/db"
+
 	"github.com/go-pg/pg/orm"
 	"github.com/ibronit/challenge-tracker-slack-slash-command/internal/exercise"
 )
@@ -27,4 +29,15 @@ func (user *User) BeforeInsert(db orm.DB) error {
 	}
 
 	return nil
+}
+
+func GetOrCreateUser(slackId string) *User {
+	newUser := &User{
+		Name:    "admin",
+		SlackId: slackId,
+	}
+
+	db.GetDB().Model(newUser).Insert()
+
+	return newUser
 }
